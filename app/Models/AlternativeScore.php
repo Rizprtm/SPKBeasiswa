@@ -25,5 +25,6 @@ class AlternativeScore extends Model
         'alternative_id',
         'criteria_id',
         'rating_id',
+        'dokumen'
     ];
 }

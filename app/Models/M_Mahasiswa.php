@@ -14,6 +14,6 @@ class M_Mahasiswa extends Model
         // return DB::table('mahasiswa')
         //     ->leftJoin('users','users.userId', '=', 'mahasiswa.userId')
         //     ->get();
-            return $this->hasOne(Mahasiswa::class);
+            return $this->hasMany(Mahasiswa::class);
     }       
 }

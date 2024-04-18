@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\M_Mahasiswa;
+use App\Models\AlternativeScore;
 
 class HomeController extends Controller
 {
@@ -31,9 +32,16 @@ class HomeController extends Controller
             ->where('users.userId', $user->userId)
             ->select('mahasiswa.nama')
             ->first();
+
+        $co_admin = User::join('admin_jurusan', 'users.userId', '=', 'admin_jurusan.userId')
+        ->where('users.userId', $user->userId)
+        ->select('admin_jurusan.nama')
+        ->first();    
         $totalMahasiswa = M_Mahasiswa::count();
+        $formulir = AlternativeScore::count();
+        $totalformulir = ceil($formulir / 3);
         // $mahasiswa = M_Mahasiswa::where('userId',$userId)->first();
         // $data = M_Mahasiswa::all();
-        return view('dashboard',['data','mahasiswa'=> $mahasiswa, 'totalMahasiswa' => $totalMahasiswa]);
+        return view('dashboard',['data','mahasiswa'=> $mahasiswa, 'totalMahasiswa'=> $totalMahasiswa, 'totalformulir' => $totalformulir, 'co_admin' => $co_admin]);
     }
 }

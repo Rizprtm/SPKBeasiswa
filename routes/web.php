@@ -50,6 +50,7 @@ Route::get('/home', [Mahasiswa::class, 'profile'])->middleware('userAkses:mahasi
 Route::get('/formulir', [Mahasiswa::class, 'create'])->middleware('userAkses:mahasiswa');
 
 
+
 Route::middleware(['auth'])->group(function(){
 
 Route::get('/admin', [HomeController::class, 'dashboard'])->middleware('userAkses:admin');
@@ -59,6 +60,7 @@ Route::get('dashboard', [HomeController::class, 'dashboard'])->middleware('userA
 
 Route::get('/co_admin', [HomeController::class, 'dashboard'])->middleware('userAkses:co_admin');
 Route::get('co_admin', [HomeController::class, 'dashboard'])->middleware('userAkses:co_admin');
+Route::get('/datamhs', [Mahasiswa::class, 'datamhs'])->middleware('userAkses:co_admin');
 
 Route::get('formulir', [Mahasiswa::class, 'formulir']);
 

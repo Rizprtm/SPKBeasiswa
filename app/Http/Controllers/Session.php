@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 
+
 class Session extends Controller
 {
     function index(){
@@ -43,6 +44,7 @@ class Session extends Controller
     }
     function logout(){
         Auth::logout();
+        session()->flush();
         return redirect('');
     }
 }

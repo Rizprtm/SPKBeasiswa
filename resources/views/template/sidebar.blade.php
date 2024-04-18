@@ -10,14 +10,14 @@
 
     <div class="sidebar">
         <!-- Sidebar user panel (optional) -->
-        <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+        {{-- <div class="user-panel mt-3 pb-3 mb-3 d-flex">
             <div class="image">
                 <img src="{{ asset('assets/img/amongus.webp') }}" class="img-circle elevation-2" alt="User Image">
             </div>
             <div class="info">
                 <a href="#" class="d-block">Admin</a>
             </div>
-        </div>
+        </div> --}}
 
         <!-- Sidebar Menu -->
         <nav class="mt-2">
@@ -141,7 +141,7 @@
             </a>
         </li>
         <li class="nav-item">
-            <a href="{{ route('alternatives.index') }}" class="nav-link">
+            <a href="{{ url('datamhs') }}" class="nav-link">
                 <ion-icon name="person-outline">
                     <i class="nav-icon far fa-file"></i>
                     <p>

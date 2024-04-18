@@ -33,11 +33,6 @@ class DecisionController extends Controller
         ->leftJoin('mahasiswa', 'alternatives.id', '=', 'mahasiswa.userId')
         ->get();
 
-        // $mahasiswa = DB::table('users')
-        // ->join('mahasiswa', 'users.userId', '=', 'mahasiswa.userId')
-        // ->select('mahasiswa.nama')
-        // ->get();
-
         $alternatives = Alternative::get();
 
         $criteriaweights = CriteriaWeight::get();

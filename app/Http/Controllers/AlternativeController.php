@@ -7,9 +7,11 @@ use App\Models\AlternativeScore;
 use App\Models\CriteriaWeight;
 use App\Models\CriteriaRating;
 use App\Models\User;
+use App\Models\M_Mahasiswa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Database\QueryException;
 
 class AlternativeController extends Controller
 {
@@ -32,13 +34,18 @@ class AlternativeController extends Controller
         ->leftJoin('alternatives', 'alternatives.id', '=', 'alternativescores.alternative_id')
         ->leftJoin('criteriaweights', 'criteriaweights.id', '=', 'alternativescores.criteria_id')
         ->leftJoin('criteriaratings', 'criteriaratings.id', '=', 'alternativescores.rating_id')
-        ->leftJoin('mahasiswa', 'alternatives.id', '=', 'mahasiswa.userId')
         ->get();
 
         $alternatives = Alternative::get();
 
+        $user = Auth::user();
+        $co_admin = User::join('admin_jurusan', 'users.userId', '=', 'admin_jurusan.userId')
+        ->where('users.userId', $user->userId)
+        ->select('admin_jurusan.nama')
+        ->first();
+
         $criteriaweights = CriteriaWeight::get();
-        return view('alternative.index', compact('scores', 'alternatives', 'criteriaweights'))->with('i', 0);
+        return view('alternative.index', compact('scores', 'alternatives', 'criteriaweights','co_admin'))->with('i', 0);
     }
 
     /**
@@ -48,19 +55,24 @@ class AlternativeController extends Controller
      */
     public function create()
     {
-        
-        $user = Auth::user();
-        $userId = $user->userId;
-        $mahasiswa = User::join('mahasiswa', 'users.userId', '=', 'mahasiswa.userId')
-            ->where('users.userId', $user->userId)
-            ->select('mahasiswa.nama')
-            ->first();
-        // $mahasiswa = M_Mahasiswa::where('userId',$userId)->first();
-        // $data = M_Mahasiswa::all();
-        
-        $criteriaweights = CriteriaWeight::get();
-        $criteriaratings = CriteriaRating::get();
-        return view('alternative.create', compact('criteriaweights', 'criteriaratings','mahasiswa','userId'));
+            
+            $user = Auth::user();
+            $userId = $user->userId;
+            $mahasiswa = User::join('mahasiswa', 'users.userId', '=', 'mahasiswa.userId')
+                ->where('users.userId', $user->userId)
+                ->select('mahasiswa.nama', 'mahasiswa.jurusan', 'mahasiswa.prodi','mahasiswa.userId')
+                ->first();
+            $nama = $mahasiswa->nama;
+                
+            // $mahasiswa = M_Mahasiswa::where('userId',$userId)->first();
+            // $data = M_Mahasiswa::all();
+            
+            $criteriaweights = CriteriaWeight::get();
+            $criteriaratings = CriteriaRating::get();
+            return view('alternative.create', compact('criteriaweights', 'criteriaratings','mahasiswa','userId'));
+            
+
+
     }
 
     /**
@@ -71,26 +83,56 @@ class AlternativeController extends Controller
      */
     public function store(Request $request)
     {
-        
-        $user = Auth::user();
-        $userId = $user->userId;
-        // Save the alternative
-        $alt = new Alternative;
-        $alt->userId = $userId;
-        $alt->save();
+        try {
+            // ddd($request);
+            
+            $user = Auth::user();
+            $userId = $user->userId;
+            // Save the alternative
+            $alt = new Alternative;
+            $alt->userId = $userId;
+            $alt->save();
 
-        // Save the score
-        $criteriaweight = CriteriaWeight::get();
-        foreach ($criteriaweight as $cw) {
-            $score = new AlternativeScore();
-            $score->alternative_id = $alt->id;
-            $score->criteria_id = $cw->id;
-            $score->rating_id = $request->input('criteria')[$cw->id];
-            $score->save();
-        }
+    
+            // Save the score
+            $criteriaweight = CriteriaWeight::get();
+            foreach ($criteriaweight as $cw) {
+                $score = new AlternativeScore();
+                $score->alternative_id = $alt->id;
+                $score->criteria_id = $cw->id;
+                $score->rating_id = $request->input('criteria')[$cw->id];
+                if ($request->hasFile('dokumen')) {
+                    $file = $request->file('dokumen');
+                    $fileName = $file->getClientOriginalName();
+                    $filePath = $file->storeAs('dokumen', $fileName); // Misalnya, menyimpan file dalam folder 'dokumen' di penyimpanan lokal
+                    $score->dokumen = $filePath; // Simpan path file ke dalam kolom 'dokumen'
+                }
+                $score->save();
+            }
+
+
+
+
+            // $nm = $request->berkas;
+            // $namaFile = $nm->getClientOriginalName();
+            // $dokUpload = new AlternativeScore;
+            // $dokUpload->berkas = $namaFile;
+            // $nm->move(public_path().'/dokumen', $namaFile);
+            // $dokUpload->save();
+
+            return redirect()->route('alternatives.create')
+                ->with('success', 'Data disimpan permanen.');
+            // If the operation was successful, send a success response
+            return response()->json(['status' => 'success']);
         
-        return redirect()->route('alternatives.create')
-            ->with('success', 'Alternative created successfully.');
+
+            // If no duplicate, proceed with creating the user
+            // Your code for creating the user goes here
+
+
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Data tidak bisa diubah (silakan hubungi admin)');
+        }
     }
 
     /**

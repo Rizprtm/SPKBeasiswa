@@ -15,18 +15,23 @@
 
         <ul class="navbar-nav ml-auto">
 
-
-
-
-
-
             <li class="nav-item dropdown user-menu">
                 <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
                     <img src="../../dist/img/user2-160x160.jpg" class="user-image img-circle elevation-2"
                         alt="User Image">
-                    {{-- @if ($mahasiswa)
-                        <span class="d-none d-md-inline">{{ $mahasiswa->nama }}</span>
-                    @endif --}}
+
+
+                    @if (Auth::check())
+                        @if (Auth::user()->role == 'admin')
+                            <span class="d-none d-md-inline">Admin</span>
+                        @elseif (Auth::user()->role == 'co_admin')
+                            <?php $co_admin; ?> <span class="d-none d-md-inline">{{ $co_admin->nama }}</span>
+                        @else
+                            <?php $mahasiswa; ?> <span class="d-none d-md-inline">{{ $mahasiswa->nama }}</span>
+                        @endif
+                    @else
+                        <p>Silakan login untuk melihat halaman ini.</p>
+                    @endif
                 </a>
                 <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
 
