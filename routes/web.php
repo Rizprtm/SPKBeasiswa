@@ -48,6 +48,7 @@ Route::resources([
 
 Route::get('/home', [Mahasiswa::class, 'profile'])->middleware('userAkses:mahasiswa');
 Route::get('/formulir', [Mahasiswa::class, 'create'])->middleware('userAkses:mahasiswa');
+Route::get('periode_beasiswa/{periode_id}/create', 'AlternativeController@create')->name('alternative.create');
 
 
 
@@ -56,7 +57,23 @@ Route::middleware(['auth'])->group(function(){
 Route::get('/admin', [HomeController::class, 'dashboard'])->middleware('userAkses:admin');
 Route::get('admin', [HomeController::class, 'dashboard'])->middleware('userAkses:admin');
 Route::get('dashboard', [HomeController::class, 'dashboard'])->middleware('userAkses:admin');
+Route::get('periode_beasiswa', [HomeController::class, 'periode']);
+Route::get('periode_beasiswa/tambah', [HomeController::class, 'view_periode'])->name('periode_beasiswa.tambah');
+Route::post('periode_beasiswa/tambah/store', [HomeController::class, 'store_periode']);
+Route::get('periode_beasiswa/view/{periode_file}', [HomeController::class, 'viewPdf'])->name('view_pdf');
+Route::get('periode_beasiswa/{periode_id}/edit', [HomeController::class, 'periode_edit'])->name('periode.edit')->middleware('userAkses:admin');
+Route::put('periode_beasiswa/update', [HomeController::class, 'periode_update'])->name('periode.update')->middleware('userAkses:admin');
+Route::delete('periode_beasiswa/delete/{periode_id}', [HomeController::class, 'periode_destroy'])->name('periode.destroy')->middleware('userAkses:admin');
 
+Route::get('admin/decision', [DecisionController::class, 'view']);
+Route::get('admin/{periode_id}/decision',[DecisionController::class, 'index'])->name('decision.index');
+
+Route::get('admin/normalization', [NormalizationController::class, 'view']);
+Route::get('admin/{periode_id}/normalization',[NormalizationController::class, 'index'])->name('normalization.index');
+
+Route::get('admin/rank', [RankController::class, 'view']);
+Route::get('admin/{periode_id}/rank',[RankController::class, 'index'])->name('rank.index');
+Route::get('rank/pdf/{periode_id}', [RankController::class, 'generatePDF'])->name('rank.pdf');
 
 Route::get('/co_admin', [HomeController::class, 'dashboard'])->middleware('userAkses:co_admin');
 Route::get('co_admin', [HomeController::class, 'dashboard'])->middleware('userAkses:co_admin');

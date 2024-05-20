@@ -22,7 +22,7 @@ class CriteriaWeight extends Model
      * @var array
      */
     protected $fillable = [
-        'userId',
+        'name',
         'type',
         'weight',
         'description',

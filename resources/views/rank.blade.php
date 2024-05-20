@@ -27,8 +27,9 @@
                         <div class="card">
 
                             <div class="card-body">
-                                <button class="btn btn-secondary buttons-excel buttons-html5" tabindex="0"
-                                    aria-controls="example1" type="button"><span>Excel</span></button>
+                                <a href="{{ url('rank/pdf', ['periode_id' => $periode_id]) }}"
+                                    class="btn btn-secondary buttons-excel buttons-html5" tabindex="0"
+                                    aria-controls="example1" type="button"><span>Excel</span></a>
                                 <table id="mytable" class="display nowrap table table-striped table-bordered">
                                     <thead>
                                         <tr>
@@ -42,6 +43,7 @@
                                     </thead>
                                     <tbody>
                                         @foreach ($alternatives as $a)
+                                            @php $i = 0; @endphp
                                             <tr>
                                                 <td>{{ ++$i }}</td>
                                                 <td>{{ $a->userId }}</td>

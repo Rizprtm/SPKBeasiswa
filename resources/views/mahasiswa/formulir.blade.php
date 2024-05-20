@@ -45,28 +45,24 @@
                                 <form action="{{ route('alternatives.store') }}" method="POST">
                                     @csrf
                                     <div class="form-group">
-                                        <label for="name">Name :</label>
-                                        <div class="input-group">
-                                            <input id="name" type="text" class="form-control"
-                                                placeholder="Someone or Something" name="name" required>
-                                        </div>
+                                        <label for="exampleInputEmail1">Pendaftaran Dimulai</label>
+                                        <input type="email" class="form-control" id="exampleInputEmail1"
+                                            placeholder="Enter email">
                                     </div>
-                                    @foreach ($criteriaweights as $cw)
-                                        <div class="form-group">
-                                            <label for="criteria[{{ $cw->id }}]">{{ $cw->name }} :</label>
-                                            <select class="form-control" id="criteria[{{ $cw->id }}]"
-                                                name="criteria[{{ $cw->id }}]">
-                                                <!--
-                                                @php
-                                                    $res = $criteriaratings->where('criteria_id', $cw->id)->all();
-                                                @endphp
-                                                -->
-                                                @foreach ($res as $cr)
-                                                    <option value="{{ $cr->id }}">{{ $cr->description }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    @endforeach
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">Pendaftaran Ditutup</label>
+                                        <input type="email" class="form-control" id="exampleInputEmail1"
+                                            placeholder="Enter email">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">Status</label>
+                                        <input type="email" class="form-control" id="exampleInputEmail1"
+                                            placeholder="Enter email">
+                                    </div>
+                                    <div class="mb-6">
+                                        <label for="formFile" class="form-label">Dokumen</label>
+                                        <input class="form-control" name ="dokumen" type="file" id="dokumen">
+                                    </div>
                                     <button type="submit" class="btn btn-primary">Submit</button>
                                     <!-- /.card-body -->
 

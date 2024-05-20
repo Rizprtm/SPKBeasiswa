@@ -24,4 +24,8 @@ class Alternative extends Model
     protected $fillable = [
         'userId'
     ];
+    public function alternativeScores()
+    {
+        return $this->hasMany(AlternativeScore::class, 'alternative_id');
+    }
 }

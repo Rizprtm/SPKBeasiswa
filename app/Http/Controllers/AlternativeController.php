@@ -8,6 +8,7 @@ use App\Models\CriteriaWeight;
 use App\Models\CriteriaRating;
 use App\Models\User;
 use App\Models\M_Mahasiswa;
+use App\Models\Periode;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
@@ -53,7 +54,7 @@ class AlternativeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
             
             $user = Auth::user();
@@ -63,13 +64,20 @@ class AlternativeController extends Controller
                 ->select('mahasiswa.nama', 'mahasiswa.jurusan', 'mahasiswa.prodi','mahasiswa.userId')
                 ->first();
             $nama = $mahasiswa->nama;
-                
+            $periode_id = $request->periode_id;   
             // $mahasiswa = M_Mahasiswa::where('userId',$userId)->first();
             // $data = M_Mahasiswa::all();
             
+        // Cek apakah mahasiswa sudah terdaftar dalam periode ini
+        $isRegistered = Alternative::where('userId', $userId)
+            ->whereHas('alternativeScores', function($query) use ($periode_id) {
+                $query->where('periode_id', $periode_id);
+            })
+            ->exists();
+
             $criteriaweights = CriteriaWeight::get();
             $criteriaratings = CriteriaRating::get();
-            return view('alternative.create', compact('criteriaweights', 'criteriaratings','mahasiswa','userId'));
+            return view('alternative.create', compact('periode_id','criteriaweights', 'criteriaratings','mahasiswa','userId','isRegistered'));
             
 
 
@@ -86,13 +94,14 @@ class AlternativeController extends Controller
         try {
             // ddd($request);
             
+            $periode_id = $request->periode_id;
             $user = Auth::user();
             $userId = $user->userId;
             // Save the alternative
             $alt = new Alternative;
             $alt->userId = $userId;
             $alt->save();
-
+            
     
             // Save the score
             $criteriaweight = CriteriaWeight::get();
@@ -101,14 +110,18 @@ class AlternativeController extends Controller
                 $score->alternative_id = $alt->id;
                 $score->criteria_id = $cw->id;
                 $score->rating_id = $request->input('criteria')[$cw->id];
+                $score->periode_id = $periode_id;
                 if ($request->hasFile('dokumen')) {
                     $file = $request->file('dokumen');
                     $fileName = $file->getClientOriginalName();
                     $filePath = $file->storeAs('dokumen', $fileName); // Misalnya, menyimpan file dalam folder 'dokumen' di penyimpanan lokal
                     $score->dokumen = $filePath; // Simpan path file ke dalam kolom 'dokumen'
                 }
+
                 $score->save();
+                
             }
+            
 
 
 

@@ -34,7 +34,14 @@
                             </p>
                         </a>
                     </li>
-
+                    <li class="nav-item">
+                        <a href="{{ url('periode_beasiswa') }}" class="nav-link">
+                            <i class="nav-icon fas fa-cube"></i>
+                            <p>
+                                Periode Beasiswa
+                            </p>
+                        </a>
+                    </li>
                     <li class="nav-item">
                         <a href="{{ url('criteriaweights') }}" class="nav-link">
                             <i class="nav-icon fas fa-cube"></i>
@@ -61,7 +68,7 @@
                     </li>
                     <li class="nav-header">SAW</li>
                     <li class="nav-item">
-                        <a href="{{ url('decision') }}" class="nav-link">
+                        <a href="{{ url('admin/decision') }}" class="nav-link">
                             <i class="nav-icon fas fa-table"></i>
                             <p>
                                 Decision Matrix
@@ -69,7 +76,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ url('normalization') }}" class="nav-link">
+                        <a href="{{ url('admin/normalization') }}" class="nav-link">
                             <i class="nav-icon far fa-chart-bar"></i>
                             <p>
                                 Normalization
@@ -77,54 +84,14 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ url('rank') }}" class="nav-link">
+                        <a href="{{ url('admin/rank') }}" class="nav-link">
                             <i class="nav-icon fas fa-chart-line"></i>
                             <p>
                                 Rank
                             </p>
                         </a>
                     </li>
-                    <li class="nav-header">TOPSIS</li>
-                    <li class="nav-item">
-                        <a href="{{ url('decision') }}" class="nav-link">
-                            <i class="nav-icon fas fa-table"></i>
-                            <p>
-                                Normalisasi
-                            </p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="{{ url('normalization') }}" class="nav-link">
-                            <i class="nav-icon far fa-chart-bar"></i>
-                            <p>
-                                Normalisasi Terbobot
-                            </p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="{{ url('normalization') }}" class="nav-link">
-                            <i class="nav-icon far fa-chart-bar"></i>
-                            <p>
-                                Solusi Ideal
-                            </p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="{{ url('normalization') }}" class="nav-link">
-                            <i class="nav-icon far fa-chart-bar"></i>
-                            <p>
-                                Jarak Solusi Ideal
-                            </p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="{{ url('rank') }}" class="nav-link">
-                            <i class="nav-icon fas fa-chart-line"></i>
-                            <p>
-                                Rank
-                            </p>
-                        </a>
-                    </li>
+
 
             </ul>
         </nav>
@@ -157,6 +124,14 @@
                 <i class="nav-icon far fa-user"></i>
                 <p>
                     Profile
+                </p>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="{{ url('periode_beasiswa') }}" class="nav-link">
+                <i class="nav-icon fas fa-cube"></i>
+                <p>
+                    Periode Beasiswa
                 </p>
             </a>
         </li>
